@@ -14,40 +14,15 @@
 	display: block;
 }
 
-#logo {
-	height: 50px;
-}
-
-.navbar-brand {
-	height: 60px;
-	padding: 5px 0px;
-}
-
-.point {
-	stroke-width: 1px;
-	stroke: black;
-}
-
-.year-label {
-	text-anchor: end;
-	font-size: 50px;
-	fill: #aaa;
-}
-
-.fill-asia {
-	fill: #8fcfd1;	
-}
-.fill-africa {
-	fill: #df5e88;	
-}
-.fill-europe {
-	fill: #f6ab6c;	
-}
-.fill-americas {
-	fill: #f6efa6;	
-}
-
-.legend {
-	font-size: 10px;
+.x-bar text {
+	transform: translate(-1px, 8px);
 	text-anchor: middle;
+	font-size: 12px;
+	fill: #b0bac9;
+}
+
+.y-bar text {
+	transform: translate(-8px, 0px);
+	font-size: 12px;
+	fill: #b0bac9;
 }

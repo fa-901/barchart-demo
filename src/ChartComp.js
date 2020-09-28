@@ -34,15 +34,19 @@ export default function ChartComp(props) {
             .attr("transform", `translate(0, ${height})`)
             .attr("class", "x-bar")
 
-        var gObjs = { g, xAxisGroup, };
+        const yAxisGroup = g.append("g")
+            .attr("class", "y-bar");
+
+        var gObjs = { g, xAxisGroup, yAxisGroup };
         setG(gObjs);
         update(gObjs);
     }
 
     function update(g) {
+        const { data } = props;
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
-        var groups = d3.map(props.data, function (d) { return (d.Group) }).keys();
+        var groups = d3.map(data, function (d) { return (d.Group) }).keys();
         var x = d3.scaleBand()
             .domain(groups)
             .range([0, width])
@@ -53,7 +57,20 @@ export default function ChartComp(props) {
         g.xAxisGroup
             .call(xAxisCall)
             .selectAll("path")
-            .style("stroke", "#E0E7FF")
+            .style("stroke", "#E0E7FF");
+
+        var y = d3.scaleLinear()
+            .domain([0, d3.max(data, function (d) { return Math.max(d.In, d.Out) })])
+            .range([height, 0]);
+
+        var yAxisCall = d3.axisLeft(y).tickSize(0).ticks(5).tickFormat((d) => {
+            return (d > 999) ? d3.format(".2s")(d) : d;
+        });
+
+        g.yAxisGroup
+            .call(yAxisCall)
+            .selectAll("path")
+            .style("stroke", "#E0E7FF");
     }
 
     return (
