@@ -82,6 +82,23 @@ export default function ChartComp(props) {
         var color = d3.scaleOrdinal()
             .domain(subgroups)
             .range(['#2E5BFF', '#081348']);
+
+        var t = d3.transition().duration(300);
+
+        //create & update grouped bars
+        var groupBar = g.g.selectAll(".items")
+            .data(data, (d)=>{ return d.Group });
+
+        groupBar.exit()
+            .remove();
+
+        groupBar.enter()
+            .merge(groupBar)
+            .append('g')
+            .attr("transform", function (d) { return "translate(" + (x(d.Group) + (x.bandwidth() / 2) - (20 / 2)) + ",0)"; })
+            .attr("class", "items");
+            
+
     }
 
     return (
