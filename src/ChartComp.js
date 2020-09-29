@@ -7,7 +7,7 @@ import "./styles/tip.css";
 
 export default function ChartComp(props) {
     const chartArea = useRef(null);
-    console.log(props.data)
+    // console.log(props.data)
     const [svg, setG] = useState('');
     const margin = { left: 35, right: 50, top: 10, bottom: 30 };
 
@@ -46,9 +46,9 @@ export default function ChartComp(props) {
         const { data } = props;
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
-        var groups = d3.map(data, function (d) { return (d.Group) }).keys();
+        var subgroups = d3.map(data, function (d) { return (d.Group) }).keys();
         var x = d3.scaleBand()
-            .domain(groups)
+            .domain(subgroups)
             .range([0, width])
             .padding([0.2])
             .align(0.5);
@@ -71,6 +71,17 @@ export default function ChartComp(props) {
             .call(yAxisCall)
             .selectAll("path")
             .style("stroke", "#E0E7FF");
+
+        var subgroups = ['In', 'Out'];
+
+        var xSubgroup = d3.scaleBand()
+            .domain(subgroups)
+            .range([0, x.bandwidth()])
+            .padding([0.05])
+
+        var color = d3.scaleOrdinal()
+            .domain(subgroups)
+            .range(['#2E5BFF', '#081348']);
     }
 
     return (
