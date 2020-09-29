@@ -97,6 +97,22 @@ export default function ChartComp(props) {
             .append('g')
             .attr("transform", function (d) { return "translate(" + (x(d.Group) + (x.bandwidth() / 2) - (20 / 2)) + ",0)"; })
             .attr("class", "items");
+
+        //gotta fix this shit
+        // var rects = g.g.selectAll('.items').selectAll('rect')
+        //     .data(function (d) { return subgroups.map(function (key) { return { key: key, value: d[key] }; }); })
+
+        // rects.exit().remove();
+
+        // rects
+        //     .enter().append("rect")
+        //     .attr("fill", d => color(d.key))
+        //     .merge(rects)
+        //     .attr("x", function (d) { return xSubgroup(d.key); })
+        //     .attr("y", function (d) { return y(d.value); })
+        //     .attr("width", 10)
+        //     .attr("height", function (d) { return height - y(d.value); })
+        //     .attr("fill", function (d) { return color(d.key); });
             
 
     }
