@@ -46,6 +46,10 @@ export default function ChartComp(props) {
         const { data } = props;
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
+
+        //transition function.
+        var t = d3.transition().duration(300);
+
         var subgroups = d3.map(data, function (d) { return (d.Group) }).keys();
         var x = d3.scaleBand()
             .domain(subgroups)
@@ -55,6 +59,7 @@ export default function ChartComp(props) {
 
         var xAxisCall = d3.axisBottom(x).tickSize(0).tickValues(x.domain().filter(function (d, i) { return !(i % 3) }));
         g.xAxisGroup
+            .transition(t)
             .call(xAxisCall)
             .selectAll("path")
             .style("stroke", "#E0E7FF");
@@ -68,22 +73,23 @@ export default function ChartComp(props) {
         });
 
         g.yAxisGroup
+            .transition(t)
             .call(yAxisCall)
             .selectAll("path")
             .style("stroke", "#E0E7FF");
 
         var subgroups = ['In', 'Out'];
 
+        //In-Out scale
         var xSubgroup = d3.scaleBand()
             .domain(subgroups)
             .range([0, x.bandwidth()])
             .padding([0.05])
 
+        //color scale
         var color = d3.scaleOrdinal()
             .domain(subgroups)
             .range(['#2E5BFF', '#081348']);
-
-        var t = d3.transition().duration(300);
 
         //destroy old & create grouped bars
         var groupBar = g.g.selectAll(".items")
@@ -109,6 +115,8 @@ export default function ChartComp(props) {
             .enter().append("rect")
             .attr("fill", d => color(d.key))
             .merge(rects)
+            .attr("y", y(0))
+            .transition(t)
             .attr("x", function (d) { return xSubgroup(d.key); })
             .attr("y", function (d) { return y(d.value); })
             .attr("width", 10)
