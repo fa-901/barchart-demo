@@ -95,8 +95,12 @@ export default function ChartComp(props) {
         groupBar.enter()
             .merge(groupBar)
             .append('g')
-            .attr("transform", function (d) { return "translate(" + (x(d.Group) + (x.bandwidth() / 2) - (20 / 2)) + ",0)"; })
             .attr("class", "items");
+
+        g.g.selectAll(".items")    
+            .attr("transform", function (d) { return "translate(" + (x(d.Group) + (x.bandwidth() / 2) - (20 / 2)) + ",0)"; })
+            .append('rect')
+            .classed('test-rectangle', true);
 
         //gotta fix this shit
         // var rects = g.g.selectAll('.items').selectAll('rect')

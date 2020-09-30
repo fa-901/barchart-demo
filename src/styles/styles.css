@@ -14,6 +14,12 @@
 	display: block;
 }
 
+.test-rectangle {
+	width: 5px;
+	height: 5px;
+	fill: blue;
+}
+
 .x-bar text {
 	transform: translate(-1px, 8px);
 	text-anchor: middle;
