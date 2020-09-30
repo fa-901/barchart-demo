@@ -85,7 +85,7 @@ export default function ChartComp(props) {
 
         var t = d3.transition().duration(300);
 
-        //create & update grouped bars
+        //destroy old & create grouped bars
         var groupBar = g.g.selectAll(".items")
             .data(data, (d)=>{ return d.Group });
 
@@ -93,30 +93,27 @@ export default function ChartComp(props) {
             .remove();
 
         groupBar.enter()
-            .merge(groupBar)
             .append('g')
             .attr("class", "items");
 
-        g.g.selectAll(".items")    
-            .attr("transform", function (d) { return "translate(" + (x(d.Group) + (x.bandwidth() / 2) - (20 / 2)) + ",0)"; })
-            .append('rect')
-            .classed('test-rectangle', true);
+        g.g.selectAll(".items")
+            .attr("transform", function (d) { return `translate(${x(d.Group) + (x.bandwidth() / 2) - (20 / 2)},0)`; });
 
-        //gotta fix this shit
-        // var rects = g.g.selectAll('.items').selectAll('rect')
-        //     .data(function (d) { return subgroups.map(function (key) { return { key: key, value: d[key] }; }); })
+        //create & update bars
+        var rects = g.g.selectAll('.items').selectAll('rect')
+            .data(function (d) { return subgroups.map(function (key) { return { key: key, value: d[key] }; }); })
 
-        // rects.exit().remove();
+        rects.exit().remove();
 
-        // rects
-        //     .enter().append("rect")
-        //     .attr("fill", d => color(d.key))
-        //     .merge(rects)
-        //     .attr("x", function (d) { return xSubgroup(d.key); })
-        //     .attr("y", function (d) { return y(d.value); })
-        //     .attr("width", 10)
-        //     .attr("height", function (d) { return height - y(d.value); })
-        //     .attr("fill", function (d) { return color(d.key); });
+        rects
+            .enter().append("rect")
+            .attr("fill", d => color(d.key))
+            .merge(rects)
+            .attr("x", function (d) { return xSubgroup(d.key); })
+            .attr("y", function (d) { return y(d.value); })
+            .attr("width", 10)
+            .attr("height", function (d) { return height - y(d.value); })
+            .attr("fill", function (d) { return color(d.key); });
             
 
     }
