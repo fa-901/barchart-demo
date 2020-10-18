@@ -86,7 +86,8 @@ export default function ChartComp(props) {
         var xSubgroup = d3.scaleBand()
             .domain(subgroups)
             .range([0, x.bandwidth()])
-            .padding(0.05)
+            .paddingInner(0.1)
+            .paddingOuter(0.9)
 
         //color scale
         var color = d3.scaleOrdinal()
