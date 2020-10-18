@@ -54,8 +54,10 @@ export default function ChartComp(props) {
         var x = d3.scaleBand()
             .domain(subgroups)
             .range([0, width])
-            .padding([0.2])
-            .align(0.5);
+            .paddingInner(.1)
+            .paddingOuter(.1);
+            // .padding([0.2])
+            // .align(0.5);
 
         var xAxisCall = d3.axisBottom(x).tickSize(0).tickValues(x.domain().filter(function (d, i) { return !(i % 3) }));
         g.xAxisGroup
@@ -84,7 +86,7 @@ export default function ChartComp(props) {
         var xSubgroup = d3.scaleBand()
             .domain(subgroups)
             .range([0, x.bandwidth()])
-            .padding([0.05])
+            .padding(0.05)
 
         //color scale
         var color = d3.scaleOrdinal()
@@ -103,7 +105,7 @@ export default function ChartComp(props) {
             .attr("class", "items");
 
         g.g.selectAll(".items")
-            .attr("transform", function (d) { return `translate(${x(d.Group) + (x.bandwidth() / 2) - (20 / 2)},0)`; });
+            .attr("transform", function (d) { return `translate(${x(d.Group)},0)`; });
 
         //create & update bars
         var rects = g.g.selectAll('.items').selectAll('rect')
@@ -119,7 +121,7 @@ export default function ChartComp(props) {
             .transition(t)
             .attr("x", function (d) { return xSubgroup(d.key); })
             .attr("y", function (d) { return y(d.value); })
-            .attr("width", 10)
+            .attr("width", xSubgroup.bandwidth())
             .attr("height", function (d) { return height - y(d.value); })
             .attr("fill", function (d) { return color(d.key); });
             
