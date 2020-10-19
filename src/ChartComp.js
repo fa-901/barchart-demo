@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
@@ -53,6 +53,9 @@ export default function ChartComp(props) {
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
 
+        //remove old tips
+        d3.selectAll('.d3-tip').remove();
+
         //transition function.
         var t = d3.transition().duration(300);
 
@@ -85,6 +88,24 @@ export default function ChartComp(props) {
             .call(yAxisCall)
             .selectAll("path")
             .style("stroke", "#E0E7FF");
+
+        //show tip
+        var tip = d3Tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html((d) => {
+                var key = d?.key || '';
+                var val = d?.value || '';
+                let html = (
+                    <Fragment>
+                        <div>
+                            <span>{key}:</span><span className='ml-2 text-standard'>{val}</span>
+                        </div>
+                    </Fragment>
+                )
+                return ReactDOMServer.renderToStaticMarkup(html);
+            });
+        g.g.call(tip);
 
         var subgroups = ['In', 'Out'];
 
@@ -125,6 +146,8 @@ export default function ChartComp(props) {
             .attr("fill", d => color(d.key))
             .merge(rects)
             .attr("y", y(0))
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
             .transition(t)
             .attr("x", function (d) { return xSubgroup(d.key); })
             .attr("y", function (d) { return y(d.value); })
