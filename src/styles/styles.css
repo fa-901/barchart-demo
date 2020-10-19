@@ -33,7 +33,8 @@
 	fill: #b0bac9;
 }
 
-.y-grid .tick line {
+.y-grid .tick line,
+.x-grid .tick line {
 	stroke: #b0bac9;
-    stroke-dasharray: 5 5;
+	stroke-dasharray: 5 5;
 }

@@ -132,12 +132,20 @@ export default function ChartComp(props) {
             .attr("height", function (d) { return height - y(d.value); })
             .attr("fill", function (d) { return color(d.key); });
 
-        // //create gridlines
+        //create gridlines
         var yGridCall = d3.axisLeft(y).tickSize((-width)).ticks(5).tickFormat('');
         var yAxisGrid = g.g.selectAll('.y-grid');
         yAxisGrid
             .transition(t)
             .call(yGridCall)
+            .selectAll("path")
+            .style("stroke", "none");
+
+        var xGridCall = d3.axisBottom(x).tickSize((height)).ticks(5).tickFormat('');
+        var xAxisGrid = g.g.selectAll('.x-grid');
+        xAxisGrid
+            .transition(t)
+            .call(xGridCall)
             .selectAll("path")
             .style("stroke", "none");
 
