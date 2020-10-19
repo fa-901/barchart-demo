@@ -37,6 +37,12 @@ export default function ChartComp(props) {
         const yAxisGroup = g.append("g")
             .attr("class", "y-bar");
 
+        const yAxisGrid = g.append("g")
+            .attr("class", "y-grid");
+
+        const xAxisGrid = g.append("g")
+            .attr("class", "x-grid");
+
         var gObjs = { g, xAxisGroup, yAxisGroup };
         setG(gObjs);
         update(gObjs);
@@ -125,7 +131,15 @@ export default function ChartComp(props) {
             .attr("width", xSubgroup.bandwidth())
             .attr("height", function (d) { return height - y(d.value); })
             .attr("fill", function (d) { return color(d.key); });
-            
+
+        // //create gridlines
+        var yGridCall = d3.axisLeft(y).tickSize((-width)).ticks(5).tickFormat('');
+        var yAxisGrid = g.g.selectAll('.y-grid');
+        yAxisGrid
+            .transition(t)
+            .call(yGridCall)
+            .selectAll("path")
+            .style("stroke", "none");
 
     }
 

@@ -32,3 +32,8 @@
 	font-size: 12px;
 	fill: #b0bac9;
 }
+
+.y-grid .tick line {
+	stroke: #b0bac9;
+    stroke-dasharray: 5 5;
+}
