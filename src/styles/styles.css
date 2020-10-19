@@ -35,6 +35,5 @@
 
 .y-grid .tick line,
 .x-grid .tick line {
-	stroke: #b0bac9;
-	stroke-dasharray: 5 5;
+	stroke: #E0E7FF;
 }
