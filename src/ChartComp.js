@@ -73,10 +73,8 @@ export default function ChartComp(props) {
         var x = d3.scaleBand()
             .domain(subgroups)
             .range([0, width])
-            .paddingInner(.1)
-            .paddingOuter(.1);
-            // .padding([0.2])
-            // .align(0.5);
+            .paddingInner(0.3)
+            .paddingOuter(0.3);
 
         var xAxisCall = d3.axisBottom(x).tickSize(0).tickValues(x.domain().filter(function (d, i) { return !(i % 3) }));
         g.xAxisGroup
@@ -105,7 +103,7 @@ export default function ChartComp(props) {
             .offset([-10, 0])
             .html((d) => {
                 var key = d?.key || '';
-                var val = d?.value || '';
+                var val = d?.value || 0;
                 let html = (
                     <Fragment>
                         <div>
@@ -145,29 +143,42 @@ export default function ChartComp(props) {
         g.g.selectAll(".items")
             .attr("transform", function (d) { return `translate(${x(d.Group)},0)`; });
 
+        //set width of bars
+        var widthB = Math.min(bar_maxW, xSubgroup.bandwidth());
+
+        //create rounded rectangle path
+        var pathGen = (key, yVal) => {
+            let w = widthB;
+            let x = xSubgroup(key);
+            let r = w / 2;
+            return rightRoundedRect(x, y(yVal), w, height - y(yVal), r);
+        }
+
         //create & update bars
-        var rects = g.g.selectAll('.items').selectAll('rect')
+        var rects = g.g.selectAll('.items').selectAll('path')
             .data(function (d) { return subgroups.map(function (key) { return { key: key, value: d[key] }; }); })
 
         rects.exit().remove();
 
         rects
-            .enter().append("rect")
+            .enter().append("path")
             .attr("fill", d => color(d.key))
             .merge(rects)
-            .attr("y", y(0))
+            // .attr("y", y(0))
+            .attr("d", function (d) { return pathGen(d.key, 0) })
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
-            .transition(t)
+            .transition(t) /** for rectangles only */
             .attr("transform", function (d) { //puts bars close together
                 let def = xSubgroup.bandwidth();
                 let x = def > 0 ? (def - bar_maxW) : 0;
                 return `translate(${d.key === 'In' ? x : 0},0)`;
             })
-            .attr("x", function (d) { return xSubgroup(d.key); })
-            .attr("y", function (d) { return y(d.value); })
-            .attr("width", Math.min(bar_maxW, xSubgroup.bandwidth()))
-            .attr("height", function (d) { return height - y(d.value); })
+            .attr("d", function (d) { return pathGen(d.key, d.value) })
+            // .attr("x", function (d) { return xSubgroup(d.key); }) /** for rectangles only */
+            // .attr("y", function (d) { return y(d.value); })
+            // .attr("width", Math.min(bar_maxW, xSubgroup.bandwidth()))
+            // .attr("height", function (d) { return height - y(d.value); })
             .attr("fill", function (d) { return color(d.key); });
 
         //create gridlines
@@ -189,8 +200,18 @@ export default function ChartComp(props) {
 
     }
 
+    function rightRoundedRect(x, y, width, height, radius) {
+        // round on top left and right
+        return "M " + x + "," + y
+            + " a " + radius + ",-" + radius + " 0 0 1 " + radius + ",-" + radius
+            + " h " + (width - 2 * radius)
+            + " a " + radius + "," + radius + " 0 0 1 " + radius + "," + radius
+            + " v " + (height)
+            + " h -" + width
+            + " z";
+    }
+
     function reportWindowSize() {
-        // console.log('li:', svg)
         drawChart();
     }
 
