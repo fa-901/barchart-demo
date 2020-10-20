@@ -10,6 +10,7 @@ export default function ChartComp(props) {
     const [svg, setG] = useState('');
     const margin = { left: 35, right: 50, top: 10, bottom: 30 };
     const bar_maxW = 7;
+    const { chartID } = props;
 
     useEffect(() => { //draw chart & initialize g first time
         drawChart();
@@ -30,10 +31,10 @@ export default function ChartComp(props) {
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
 
-        const elem = document.getElementById("chart-area");
+        const elem = document.getElementById(chartID);
         elem.innerHTML = '';
 
-        var g = d3.select("#chart-area")
+        var g = d3.select(`#${chartID}`)
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -217,6 +218,6 @@ export default function ChartComp(props) {
     }
 
     return (
-        <div id="chart-area" ref={chartArea}></div>
+        <div id={chartID} ref={chartArea}></div>
     )
 }
