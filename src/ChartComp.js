@@ -7,7 +7,6 @@ import "./styles/tip.css";
 
 export default function ChartComp(props) {
     const chartArea = useRef(null);
-    // console.log(props.data)
     const [svg, setG] = useState('');
     const margin = { left: 35, right: 50, top: 10, bottom: 30 };
     const bar_maxW = 7;
