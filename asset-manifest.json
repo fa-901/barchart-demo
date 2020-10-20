@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/barchart-demo/static/css/main.b0577052.chunk.css",
+    "main.js": "/barchart-demo/static/js/main.26571356.chunk.js",
+    "main.js.map": "/barchart-demo/static/js/main.26571356.chunk.js.map",
+    "runtime~main.js": "/barchart-demo/static/js/runtime~main.13c00841.js",
+    "runtime~main.js.map": "/barchart-demo/static/js/runtime~main.13c00841.js.map",
+    "static/js/2.dbf6212b.chunk.js": "/barchart-demo/static/js/2.dbf6212b.chunk.js",
+    "static/js/2.dbf6212b.chunk.js.map": "/barchart-demo/static/js/2.dbf6212b.chunk.js.map",
+    "index.html": "/barchart-demo/index.html",
+    "precache-manifest.f1ad460020ee98e6275ed89c282fea8d.js": "/barchart-demo/precache-manifest.f1ad460020ee98e6275ed89c282fea8d.js",
+    "service-worker.js": "/barchart-demo/service-worker.js",
+    "static/css/main.b0577052.chunk.css.map": "/barchart-demo/static/css/main.b0577052.chunk.css.map"
+  }
+}
