@@ -14,6 +14,12 @@ export default function ChartComp(props) {
 
     useEffect(() => {
         drawChart();
+        window.addEventListener('resize', reportWindowSize);
+
+        return function cleanup() {
+            window.removeEventListener('resize', reportWindowSize);
+        };
+
     }, []);
 
     useEffect(() => {
@@ -23,6 +29,9 @@ export default function ChartComp(props) {
     function drawChart() {
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
+
+        const elem = document.getElementById("chart-area");
+        elem.innerHTML = '';
 
         var g = d3.select("#chart-area")
             .append("svg")
@@ -178,6 +187,10 @@ export default function ChartComp(props) {
             .selectAll("path")
             .style("stroke", "none");
 
+    }
+
+    function reportWindowSize() {
+        drawChart();
     }
 
     return (
