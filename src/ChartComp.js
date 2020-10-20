@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState, useCallback } from "react";
 import ReactDOMServer from 'react-dom/server';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
@@ -11,19 +11,20 @@ export default function ChartComp(props) {
     const margin = { left: 35, right: 50, top: 10, bottom: 30 };
     const bar_maxW = 7;
 
-    useEffect(() => {
+    useEffect(() => { //draw chart & initialize g first time
         drawChart();
-        window.addEventListener('resize', reportWindowSize);
-
-        return function cleanup() {
-            window.removeEventListener('resize', reportWindowSize);
-        };
-
     }, []);
 
-    useEffect(() => {
+    useEffect(() => { // update chart when props data is changed
         svg && update(svg);
     }, [props.data]);
+
+    useEffect(() => { // event listener
+        window.addEventListener('resize', reportWindowSize);
+        return () => {
+            window.removeEventListener('resize', reportWindowSize);
+        }
+    });
 
     function drawChart() {
         const width = chartArea.current.clientWidth - margin.left - margin.right,
@@ -189,6 +190,7 @@ export default function ChartComp(props) {
     }
 
     function reportWindowSize() {
+        // console.log('li:', svg)
         drawChart();
     }
 
