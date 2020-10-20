@@ -115,9 +115,10 @@ export default function ChartComp(props) {
             });
         g.g.call(tip);
 
-        var subgroups = ['In', 'Out'];
+        // var subgroups = ['In', 'Out'];
+        var subgroups = props.groups;
 
-        //In-Out scale
+        //Subgroup scale
         var xSubgroup = d3.scaleBand()
             .domain(subgroups)
             .range([0, x.bandwidth()])

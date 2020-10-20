@@ -30,7 +30,7 @@ export default function App() {
 						/>
 					</div>
 				</div>
-				<ChartComp data={json[dType]} />
+				<ChartComp data={json[dType]} groups={['In', 'Out']} />
 			</div>
 		</div>
 	);
