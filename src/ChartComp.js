@@ -10,6 +10,7 @@ export default function ChartComp(props) {
     // console.log(props.data)
     const [svg, setG] = useState('');
     const margin = { left: 35, right: 50, top: 10, bottom: 30 };
+    const bar_maxW = 7;
 
     useEffect(() => {
         drawChart();
@@ -113,8 +114,8 @@ export default function ChartComp(props) {
         var xSubgroup = d3.scaleBand()
             .domain(subgroups)
             .range([0, x.bandwidth()])
-            .paddingInner(0.1)
-            .paddingOuter(0.9)
+            .paddingInner(0.2)
+            .paddingOuter(0.5)
 
         //color scale
         var color = d3.scaleOrdinal()
@@ -149,9 +150,14 @@ export default function ChartComp(props) {
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
             .transition(t)
+            .attr("transform", function (d) { //puts bars close together
+                let def = xSubgroup.bandwidth();
+                let x = def > 0 ? (def - bar_maxW) : 0;
+                return `translate(${d.key === 'In' ? x : 0},0)`;
+            })
             .attr("x", function (d) { return xSubgroup(d.key); })
             .attr("y", function (d) { return y(d.value); })
-            .attr("width", xSubgroup.bandwidth())
+            .attr("width", Math.min(bar_maxW, xSubgroup.bandwidth()))
             .attr("height", function (d) { return height - y(d.value); })
             .attr("fill", function (d) { return color(d.key); });
 
