@@ -8,7 +8,8 @@ import "./styles/tip.css";
 export default function ChartComp(props) {
     const chartArea = useRef(null);
     const [svg, setG] = useState('');
-    const margin = { left: 35, right: 50, top: 10, bottom: 30 };
+    const [chartWidth, updateWidth] = useState(0);
+    const margin = { left: 50, right: 5, top: 10, bottom: 30 };
     const bar_maxW = 7;
     const { chartID } = props;
 
@@ -21,10 +22,20 @@ export default function ChartComp(props) {
     }, [props.data]);
 
     useEffect(() => { // event listener
-        window.addEventListener('resize', reportWindowSize);
+        resizeObserver.observe(document.getElementById(chartID));
         return () => {
-            window.removeEventListener('resize', reportWindowSize);
+            resizeObserver.unobserve(document.getElementById(chartID));
         }
+    });
+
+    const resizeObserver = new ResizeObserver(entries => {
+        entries.map((e) => {
+            let curWidth = e.contentRect?.width;
+            if (curWidth !== chartWidth) {
+                updateWidth(curWidth);
+                reportWindowSize();
+            }
+        })
     });
 
     function drawChart() {
@@ -60,12 +71,12 @@ export default function ChartComp(props) {
     }
 
     function update(g) {
-        const { data } = props;
+        const { data, chartSettings } = props;
         const width = chartArea.current.clientWidth - margin.left - margin.right,
             height = chartArea.current.clientHeight - margin.top - margin.bottom;
 
         //remove old tips
-        d3.selectAll('.d3-tip').remove();
+        d3.selectAll(`.${chartID}.d3-tip`).remove();
 
         //transition function.
         var t = d3.transition().duration(300);
@@ -85,7 +96,10 @@ export default function ChartComp(props) {
             .style("stroke", "#E0E7FF");
 
         var y = d3.scaleLinear()
-            .domain([0, d3.max(data, function (d) { return Math.max(d.In, d.Out) })])
+            .domain([0, d3.max(data, (d) => {
+                let ar = props.groups.map((v) => { return d[v] });
+                return Math.max(...ar);
+            })])
             .range([height, 0]);
 
         var yAxisCall = d3.axisLeft(y).tickSize(0).ticks(5).tickFormat((d) => {
@@ -100,7 +114,7 @@ export default function ChartComp(props) {
 
         //show tip
         var tip = d3Tip()
-            .attr('class', 'd3-tip')
+            .attr('class', `${chartID} d3-tip`)
             .offset([-10, 0])
             .html((d) => {
                 var key = d?.key || '';
@@ -133,7 +147,7 @@ export default function ChartComp(props) {
 
         //destroy old & create grouped bars
         var groupBar = g.g.selectAll(".items")
-            .data(data, (d)=>{ return d.Group });
+            .data(data, (d) => { return d.Group });
 
         groupBar.exit()
             .remove();
@@ -199,6 +213,28 @@ export default function ChartComp(props) {
             .call(xGridCall)
             .selectAll("path")
             .style("stroke", "none");
+
+        //create axis labels
+        if (chartSettings) {
+            g.g.append('text')
+                .text(chartSettings.xLabel)
+                .attr('x', width / 2)
+                .attr('y', (height + margin.bottom))
+                .attr('class', 'x-axis-label')
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '12px')
+                .attr('text-anchor', 'middle');
+
+            g.g.append('text')
+                .attr('x', -(height / 2))
+                .attr('y', -margin.bottom - 5)
+                .attr('class', 'y-axis-label')
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '12px')
+                .attr('text-anchor', 'middle')
+                .attr('transform', 'rotate(-90)')
+                .text(chartSettings.yLabel);
+        }
 
     }
 
