@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/barchart-demo/static/css/main.b0577052.chunk.css",
-    "main.js": "/barchart-demo/static/js/main.26571356.chunk.js",
-    "main.js.map": "/barchart-demo/static/js/main.26571356.chunk.js.map",
+    "main.js": "/barchart-demo/static/js/main.fa68275b.chunk.js",
+    "main.js.map": "/barchart-demo/static/js/main.fa68275b.chunk.js.map",
     "runtime~main.js": "/barchart-demo/static/js/runtime~main.13c00841.js",
     "runtime~main.js.map": "/barchart-demo/static/js/runtime~main.13c00841.js.map",
-    "static/js/2.dbf6212b.chunk.js": "/barchart-demo/static/js/2.dbf6212b.chunk.js",
-    "static/js/2.dbf6212b.chunk.js.map": "/barchart-demo/static/js/2.dbf6212b.chunk.js.map",
+    "static/js/2.b5b64fb2.chunk.js": "/barchart-demo/static/js/2.b5b64fb2.chunk.js",
+    "static/js/2.b5b64fb2.chunk.js.map": "/barchart-demo/static/js/2.b5b64fb2.chunk.js.map",
     "index.html": "/barchart-demo/index.html",
-    "precache-manifest.f1ad460020ee98e6275ed89c282fea8d.js": "/barchart-demo/precache-manifest.f1ad460020ee98e6275ed89c282fea8d.js",
+    "precache-manifest.d1e66b5b58d75346b7cbbd52b4a18095.js": "/barchart-demo/precache-manifest.d1e66b5b58d75346b7cbbd52b4a18095.js",
     "service-worker.js": "/barchart-demo/service-worker.js",
     "static/css/main.b0577052.chunk.css.map": "/barchart-demo/static/css/main.b0577052.chunk.css.map"
   }
